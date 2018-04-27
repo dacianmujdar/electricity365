@@ -5,6 +5,6 @@
 env/
 *.DS_Store
 .idea/
-staticfiles/
+static/
+*.sqlite3
 media/
-.cache/
