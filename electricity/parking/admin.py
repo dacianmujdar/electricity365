@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.contrib import admin
 
-from models import CameraInput, ParkingSpot, CameraParkingSpot
+from electricity.parking.models import CameraInput, ParkingSpot, CameraParkingSpot
 
 admin.register(CameraInput)
 admin.register(ParkingSpot)
