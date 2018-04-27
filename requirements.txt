@@ -3,3 +3,4 @@ djangorestframework==3.8.2
 gunicorn==19.7.1
 numpy==1.14.2
 pytz==2018.4
+whitenoise==3.3.1
