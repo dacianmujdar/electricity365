@@ -5,6 +5,6 @@ from django.contrib import admin
 
 from electricity.parking.models import CameraInput, ParkingSpot, CameraParkingSpot
 
-admin.register(CameraInput)
-admin.register(ParkingSpot)
-admin.register(CameraParkingSpot)
+admin.site.register(CameraInput)
+admin.site.register(ParkingSpot)
+admin.site.register(CameraParkingSpot)
