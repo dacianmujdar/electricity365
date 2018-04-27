@@ -6,5 +6,4 @@ env/
 *.DS_Store
 .idea/
 static/
-*.sqlite3
 media/
