@@ -1,0 +1,10 @@
+*.pyc
+*.out
+*.err
+*.log
+env/
+*.DS_Store
+.idea/
+staticfiles/
+media/
+.cache/
