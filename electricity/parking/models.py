@@ -5,7 +5,7 @@ from django.db import models
 
 
 class CameraInput(models.Model):
-    url = models.URLField(max_length=200, help_text="The audio stream url")
+    url = models.CharField(max_length=400, help_text="The audio stream url")
     name = models.CharField(max_length=200)
     is_active = models.BooleanField(default=True, help_text='True if the audio stream is working')
 
@@ -26,3 +26,4 @@ class ParkingSpot(models.Model):
                                                related_name='parking_spot')
     latitude = models.FloatField()
     longitude = models.FloatField()
+    is_occupied = models.BooleanField(default=False)

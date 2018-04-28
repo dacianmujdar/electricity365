@@ -23,5 +23,5 @@ class Predictor:
     def predict(self, image_path=None, np_array=None):
         if image_path:
             np_array = np.array(Image.open(image_path).resize((64, 64)))[:, :, :3].reshape(1, 64, 64,3)
-
+        import pdb; pdb.set_trace()
         return self._predictor.predict(np_array)[0][0] == 1
