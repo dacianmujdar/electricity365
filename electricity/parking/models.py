@@ -15,10 +15,10 @@ class CameraParkingSpot(models.Model):
     The information you need to identify the parking spot in video
     """
     video_input = models.ForeignKey('CameraInput', verbose_name='Camera input', related_name='parking_spots')
-    center_x = models.IntegerField(verbose_name='Center x')
-    center_y = models.IntegerField(verbose_name='Center y')
-    height = models.IntegerField()
-    width = models.IntegerField()
+    upper_right_x = models.IntegerField(verbose_name='Upper Right x')
+    upper_right_y = models.IntegerField(verbose_name='Upper Right y')
+    bottom_left_x = models.IntegerField(verbose_name='Bottom Left x')
+    bottom_right_y = models.IntegerField(verbose_name='Bottom Right y')
 
 
 class ParkingSpot(models.Model):
