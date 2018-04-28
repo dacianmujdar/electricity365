@@ -8,21 +8,7 @@ from electricity.parking.serializers import ParkingSpotSerializer
 
 
 def nearby_spots(location_latitude, location_longitude, radius):
-    radius = float(radius) / 1000.0
-
-    query = """SELECT id, (6367*acos(cos(radians(%2f))
-                   *cos(radians(latitude))*cos(radians(longitude)-radians(%2f))
-                   +sin(radians(%2f))*sin(radians(latitude))))
-                   AS distance FROM demo_spot HAVING
-                   distance < %2f ORDER BY distance LIMIT 0, %d""" % (
-        float(location_latitude),
-        float(location_longitude),
-        float(location_latitude),
-        radius,
-        100
-    )
-
-    return ParkingSpot.objects.raw(query)
+    return ParkingSpot.objects.all()
 
 
 class ParkingSpotList(generics.ListAPIView):
