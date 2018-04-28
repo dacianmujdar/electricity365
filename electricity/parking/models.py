@@ -21,7 +21,6 @@ class CameraParkingSpot(models.Model):
     bottom_right_y = models.IntegerField(verbose_name='Bottom Right y')
 
 
-
 class ParkingSpot(models.Model):
     camera_parking_spot = models.OneToOneField(CameraParkingSpot, verbose_name='Camera parking spot',
                                                related_name='parking_spot')
