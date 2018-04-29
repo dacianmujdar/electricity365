@@ -1,1 +1,1 @@
-web: gunicorn electricity.wsgi
+web: python manage.py runserver
