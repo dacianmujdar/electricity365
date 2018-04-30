@@ -2,6 +2,7 @@ from electricity.parking.models import CameraParkingSpot, CameraInput
 import numpy as np
 import cv2
 from PIL import Image
+import logging
 
 from electricity.predictor.predictor import Predictor
 
@@ -26,4 +27,5 @@ class StreamFrameProcesser:
                     cv2.imwrite('t.png', rect_img)
                     camera_parking_spot.parking_spot.is_occupied = Predictor.predict(np_array=rect_img)
                     camera_parking_spot.parking_spot.save()
-
+            else:
+                logging.error("Failed to open video")
