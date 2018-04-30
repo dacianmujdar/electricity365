@@ -13,7 +13,7 @@ class StreamFrameProcesser:
 
         video = cv2.VideoCapture()
         for camera in CameraInput.objects.all():
-            url = 'https://video-weaver.lhr03.hls.ttvnw.net/v1/playlist/CoIDSHsQDAonb1oIcYRvzPf2qCidU4J7qMQwoTZ3Ow-5pOvCEXQlezpQbCbJl6Bau1k2vr-pircxy4VUaV-bYdVC7GMqEECN8JJR3FbD__QO2mLVAK5S5RLoikAx1YuET_aYwU9aLlfhEQ7-HIKQ6HzAj_VG7yFLF087HbaDgHi_19UWSAJL3u6XnFeOlWacnXImtqoW9ZkQDLCMnjDv60y8CG3UUXFVOtdxf6axxbeklRfu9B-ha5ZRPIYb5rjsg69N90sjVGIzcq0IVAHlXGABEDEaPGi2Vb5btfo-4-9ONfqvSc8gxlOkPRfzH85_XVO5wdiYhqjd9bhaRiYKqD_iGSTSosWhznHyIXqW4VLBu48BLzapqUXaNI77oKsnJFBO2dqmHMXodJKm4E5jjpOKoe2nE0mOjVBOLvxYxolFPdASpBk4GLDjhf92oTmuCDdwY1rz065DA6YFmqIiNieTCtdBJCI_c7tzVy3J9xBaxbDvnzy1G9EtZc6FrJ-zF4VMW70SEGtstqBlRIAPDn6QPeW_1XYaDLglT88WNqIxt0AG4A.m3u8'
+            url = 'https://video-weaver.lhr03.hls.ttvnw.net/v1/playlist/CoMDm3zntZ6qhdxFlBnYIrM9eOey1lf4c1K_oGsVNf8CzZFU3JTRoRvCzvIafdGqqzBvtbo0wJEzq7Mx9d0maGy-XL-lE60-yGTNfiTcEWat_S9B3jzmRR4lm2EGG6KwYZfMSE60kylitxlWVzYQPdZ3Ooi0nuMFrcYMcpOcwVfdHYm9oirb0tZiTmQVpQJ_bgddfUuDhU6MGOBL545nAvkUm7hub4TD_PR6bUCChVGfENoyoIP9SR3s4opK3c6-stMI4HDiDRv3FF1WUsKwK5kpKH_muzr5ZiFuBQSZH67LTZhnLP4138mA5vJqrLsCBUzTKDNzjzfmFDyY_UWnX7a6ihSa_Bpb_XUvxQjYpygY3YSuzu5iWpwjJXgBg8GUTw_9ARgURB09hzGo1Ct2wOLBEbnKA4tniVmQChjD64QpbXuI-8Ww20caJmEHKLSCT2QDVVXlOl4Qk1xWHKffs1dEplnJkmUZ7xr9wCZD8AyPoSAGIttPNIgeXhL20Gw2JgdNP0CwEhDEcyHXkeOPvAuWm2DWfhWQGgyLZkYnPq0mDUnB8cs.m3u8'
             video = cv2.VideoCapture()
             video.open(url)
             success, image = video.read()
