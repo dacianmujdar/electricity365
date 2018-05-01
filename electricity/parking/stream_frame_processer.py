@@ -13,7 +13,7 @@ class StreamFrameProcesser:
     def refresh_frames():
         for camera in CameraInput.objects.all():
             video = cv2.VideoCapture()
-            url = 'https://video-edge-c680d4.fra02.hls.ttvnw.net/v1/segment/CoYDvvC9CL6PE6Y7yRYCGxpFpgJE72l7Krv_Ey_BKT3dwjZToJzaFIvBDbN1ATonFKbiIofn4Lu8F55Fc98vq8tZykZq0Rfge_87fA-VkDU0xBmUS-0EGkJ7NXVA9ZEQqrza1mUgKRJZKYEHn4F8yZEc94NCntWOn776gX1mJhG4l8H7XaTr4B-p3l2NWU-aOo3fj5YA2iMhDjkenSkqPNymyPKfOm28jGAbODiVNBlqSO5b76PUPRjZhB8npzcYMhn6BtJT-jV4oeN4hvbcS5DamlvTMFo77CehzqRCqSuRyon5auLipmkzYtrW0ClMUwUjCJHGVtK5ZzcHXzF-7DDqJ0DE6P9gmmEOkdKidh0AKTManDQ61zxpmGn5lWP9pvNQawS-Frg1J0U2lKp9eWoj8FdEsv1CO8xC0nvxS88S2lF8jgKzUzQcrF1bsYXmsdhRbS_76YQsAnKlNxVGLKADMZQqV_ZQ6bMwasocHOV42UU7y0fNHWUMT3c28DJRVpVHzAOXttE1EhDnwE5hoOTKU_jUX-ekEbM8GgwOLiD72wzxBhaq3-E.ts'
+            url = "https://video-weaver.fra02.hls.ttvnw.net/v1/playlist/CoMDcSbBLQvLi-jB93IEJuacqAPadhDoXFdDEpSJfzFpx9iNchykWSrIaVVGnnTqyojZOegr3AbHJAkFxPjPtnSP8y3dN3jNPrwHVzLKALSRf1X6POzYcAYMdOAbjwjOeDqR3KawFcEkq6xHWXguyfupOOFJcszrymr0Pect-3Yjv2vt1mAugQdcHNY3r2VlzBcYwyLmPT6kj9QnKVtmlT20sAJJIMuGeCf_-oD9Tk-4hWDOG9JSvPQr3g-iitFdAp_40aJcTWT1rw6MQwOUq_K_mU_SkW7DtjunQ7lYPutHI0QNR0tK0qBtZJjfPPNGhRT2afbRq3nR6ncp1qQgpK8KENi0huRJOP5fzaCDJyDC9g2Pe4fZdIbiaOu4F_genlmr_WYxmvd94E_DSWJ5aaeEIy-GDN3uRJWZoe667PormmKpi40i0WO3sdodvyBpaxf7RZ7G3siObaHt_6Ig5paAdNZBNE7vJ0dwF39g9v_IppUwT-W_4mVEv-EHUS4TqYLcf08mEhCpCnOCa_uDaaXKKsIh7hWJGgwbqvUilAu2VF5QCrk.m3u8"
             video.open(url)
             success, image = video.read()
             Predictor.predict(image_path='t.png')
