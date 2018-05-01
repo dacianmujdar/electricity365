@@ -18,17 +18,13 @@ class StreamFrameProcesser:
             video = cv2.VideoCapture()
             video.open(url)
             success, image = video.read()
-            cv2.imwrite('t.png', rect_img)
-            camera_parking_spot.parking_spot.is_occupied = Predictor.predict(np_array=rect_img)
-            camera_parking_spot.parking_spot.save()
-            if success:
-                for camera_parking_spot in camera.parking_spots.all():
-                    upper_left = [camera_parking_spot.upper_right_x + 180, camera_parking_spot.upper_right_y + 100]
-                    bottom_right = [camera_parking_spot.bottom_left_x + 180, camera_parking_spot.bottom_right_y + 100]
-
-                    rect_img = image[upper_left[1]: bottom_right[1], upper_left[0]: bottom_right[0]]
-                    cv2.imwrite('t.png', rect_img)
-                    camera_parking_spot.parking_spot.is_occupied = Predictor.predict(np_array=rect_img)
-                    camera_parking_spot.parking_spot.save()
-            else:
+            if not success:
                 logging.error("Failed to open video")
+            for camera_parking_spot in camera.parking_spots.all():
+                upper_left = [camera_parking_spot.upper_right_x + 180, camera_parking_spot.upper_right_y + 100]
+                bottom_right = [camera_parking_spot.bottom_left_x + 180, camera_parking_spot.bottom_right_y + 100]
+
+                rect_img = image[upper_left[1]: bottom_right[1], upper_left[0]: bottom_right[0]]
+                cv2.imwrite('t.png', rect_img)
+                camera_parking_spot.parking_spot.is_occupied = Predictor.predict(np_array=rect_img)
+                camera_parking_spot.parking_spot.save()
