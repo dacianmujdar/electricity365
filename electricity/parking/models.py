@@ -9,6 +9,9 @@ class CameraInput(models.Model):
     name = models.CharField(max_length=200)
     is_active = models.BooleanField(default=True, help_text='True if the audio stream is working')
 
+    def __unicode__(self):
+        return self.name
+
 
 class CameraParkingSpot(models.Model):
     """
@@ -20,6 +23,9 @@ class CameraParkingSpot(models.Model):
     bottom_left_x = models.IntegerField(verbose_name='Bottom Left x')
     bottom_right_y = models.IntegerField(verbose_name='Bottom Right y')
 
+    def __unicode__(self):
+        return "[{} - {}, {} - {}] from {}".format(self.upper_right_x, self.upper_right_y, self.bottom_left_x, self.bottom_right_y, self.video_input)
+
 
 class ParkingSpot(models.Model):
     camera_parking_spot = models.OneToOneField(CameraParkingSpot, verbose_name='Camera parking spot',
@@ -27,3 +33,6 @@ class ParkingSpot(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
     is_occupied = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return "Parking spot for {}".format(self.camera_parking_spot)
