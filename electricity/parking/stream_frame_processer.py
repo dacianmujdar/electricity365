@@ -18,6 +18,9 @@ class StreamFrameProcesser:
             video = cv2.VideoCapture()
             video.open(url)
             success, image = video.read()
+            cv2.imwrite('t.png', rect_img)
+            camera_parking_spot.parking_spot.is_occupied = Predictor.predict(np_array=rect_img)
+            camera_parking_spot.parking_spot.save()
             if success:
                 for camera_parking_spot in camera.parking_spots.all():
                     upper_left = [camera_parking_spot.upper_right_x + 180, camera_parking_spot.upper_right_y + 100]
