@@ -16,7 +16,6 @@ class StreamFrameProcesser:
             url = 'http://content.jwplatform.com/manifests/vM7nH0Kl.m3u8'
             video.open(url)
             success, image = video.read()
-            Predictor.predict(image_path='t.png')
             if success:
                 for camera_parking_spot in camera.parking_spots.all():
                     upper_left = [camera_parking_spot.upper_right_x, camera_parking_spot.upper_right_y]
