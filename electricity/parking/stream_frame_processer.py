@@ -13,7 +13,7 @@ class StreamFrameProcesser:
     def refresh_frames():
         for camera in CameraInput.objects.all():
             video = cv2.VideoCapture()
-            url = 'https://hddn01.skylinewebcams.com/live.m3u8?a=5tm6kfqrhqbpblan9j5d4bmua4'
+            url = 'http://dcunilive30-lh.akamaihd.net/i/dclive_1@653088/master.m3u8'
             video.open(url)
             success, image = video.read()
             Predictor.predict(image_path='t.png')
@@ -24,6 +24,7 @@ class StreamFrameProcesser:
 
                     rect_img = image[upper_left[1]: bottom_right[1], upper_left[0]: bottom_right[0]]
                     cv2.imwrite('t.png', rect_img)
+                    cv2.imwrite('b.png', image)
                     camera_parking_spot.parking_spot.is_occupied = Predictor.predict(np_array=rect_img)
                     camera_parking_spot.parking_spot.save()
             else:
