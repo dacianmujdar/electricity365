@@ -4,13 +4,16 @@ from rest_framework import serializers
 
 from electricity.parking.models import ParkingSpot
 
+PARKING_URL = "static/parking{}.png"
+
 
 class ParkingSpotSerializer(serializers.ModelSerializer):
-    is_occupied = serializers.SerializerMethodField()
+    camera_image = serializers.SerializerMethodField()
 
     class Meta:
         model = ParkingSpot
-        fields = ('latitude', 'longitude', 'is_occupied')
+        fields = ('latitude', 'longitude', 'is_occupied', 'camera_image')
 
-    def get_is_occupied(self, instance):
-        return np.random.rand() > .5
+    @staticmethod
+    def get_camera_image(parking_spot):
+        return PARKING_URL.format(parking_spot.camera_parking_spot.camera.id)

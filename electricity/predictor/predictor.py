@@ -1,27 +1,29 @@
 import numpy as np
+import cv2
 from keras.models import model_from_json
 from PIL import Image
 
 
 class Predictor:
 
-    def __init__(self):
-        self._predictor = self._load_model()
+    _predictor = None
 
     @staticmethod
     def _load_model():
         # load json and create model
-        json_file = open('neural_network/model.json', 'r')
+        json_file = open('electricity/predictor/neural_network/model.json', 'r')
         loaded_model_json = json_file.read()
         json_file.close()
         predictor = model_from_json(loaded_model_json)
         # load weights into new model
-        predictor.load_weights("neural_network/model.h5")
-
+        predictor.load_weights("electricity/predictor/neural_network/model.h5")
         return predictor
 
-    def predict(self, image_path=None, np_array=None):
-        if image_path:
-            np_array = np.array(Image.open(image_path).resize((64, 64)))[:, :, :3].reshape(1, 64, 64,3)
+    @staticmethod
+    def predict(image_path):
+        if not Predictor._predictor:
+            Predictor._predictor = Predictor._load_model()
+        image = Image.open(image_path)
 
-        return self._predictor.predict(np_array)[0][0] == 1
+        np_array = np.array(image.resize((64, 64)))[:, :, :3].reshape(1, 64, 64, 3)
+        return Predictor._predictor.predict(np_array)[0][0] == 1
