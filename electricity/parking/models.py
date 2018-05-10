@@ -24,7 +24,7 @@ class CameraParkingSpot(models.Model):
     bottom_right_y = models.IntegerField(verbose_name='Bottom Right y')
 
     def __unicode__(self):
-        return "[{} - {}, {} - {}] from {}".format(self.upper_right_x, self.upper_right_y, self.bottom_left_x, self.bottom_right_y, self.video_input)
+        return "[{} - {}, {} - {}] from {}".format(self.upper_right_x, self.upper_right_y, self.bottom_left_x, self.bottom_right_y, self.camera)
 
 
 class ParkingSpot(models.Model):
