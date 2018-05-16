@@ -3,9 +3,11 @@ from django.utils import timezone
 from electricity.parking.models import CameraParkingSpot, CameraInput
 import numpy as np
 import cv2
+import imutils
 from PIL import Image
 import logging
 from background_task import background
+
 
 
 from electricity.predictor.predictor import Predictor
@@ -26,7 +28,7 @@ def refresh_frames():
                 upper_left = [camera_parking_spot.upper_right_x, camera_parking_spot.upper_right_y]
                 bottom_right = [camera_parking_spot.bottom_left_x, camera_parking_spot.bottom_right_y]
 
-                rect_img = image[upper_left[1]: bottom_right[1], upper_left[0]: bottom_right[0]]
+                rect_img = imutils.rotate_bound(image, camera_parking_spot.rotation_angle)[upper_left[1]: bottom_right[1], upper_left[0]: bottom_right[0]]
                 cv2.imwrite('partial.png', rect_img)
 
                 camera_parking_spot.parking_spot.is_occupied = Predictor.predict(image_path="partial.png")

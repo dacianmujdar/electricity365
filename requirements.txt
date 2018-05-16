@@ -32,3 +32,4 @@ whitenoise==3.3.1
 opencv-python==3.4.0.12
 tensorflow
 django-background-tasks==1.1.13
+imutils==0.4.6
