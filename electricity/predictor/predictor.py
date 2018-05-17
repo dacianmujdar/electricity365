@@ -24,5 +24,5 @@ class Predictor:
         if not Predictor._predictor:
             Predictor._predictor = Predictor._load_model()
         image = Image.open(image_path)
-        np_array = np.array(image.resize((64, 64)))[:, :, :3].reshape(1, 64, 64, 3)
+        np_array = np.array(image.resize((128, 128)))[:, :, :3].reshape(1, 128, 128, 3)
         return Predictor._predictor.predict(np_array)[0][0] == 1
