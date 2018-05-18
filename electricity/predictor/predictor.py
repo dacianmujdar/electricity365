@@ -36,5 +36,4 @@ class Predictor:
         np_array = np.array(image_resized)[:, :, :3]
         cv2.imwrite('partial_resized.png', np.array(image_resized))
         cv2.imwrite('partial_resized_3c.png', np_array)
-        import pdb; pdb.set_trace()
         return Predictor._predictor.predict(np_array.reshape(1, 64, 64, 3))[0][0] == 1
