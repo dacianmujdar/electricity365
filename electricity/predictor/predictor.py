@@ -34,6 +34,5 @@ class Predictor:
         image = Image.open(image_path)
         image_resized = image.resize(NN_INPUT_SIZE, PIL.Image.ANTIALIAS)
         np_array = np.array(image_resized)[:, :, :3]
-        cv2.imwrite('partial_resized.png', np.array(image_resized))
-        cv2.imwrite('partial_resized_3c.png', np_array)
+        image_resized.save('partial_resized.png')
         return Predictor._predictor.predict(np_array.reshape(1, 64, 64, 3))[0][0] == 1

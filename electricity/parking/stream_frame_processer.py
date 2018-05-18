@@ -34,6 +34,17 @@ def refresh_frames():
                 spot.parking_spot.is_occupied = Predictor.predict(image_path="partial.png")
                 spot.parking_spot.save()
 
+                # # crop the rectangle
+                # pillow_image = PIL.Image.fromarray(image)
+                # pillow_image.rotate(spot.rotation_angle)
+                # width, height = pillow_image.size  # Get dimensions
+                # left = (width - spot.width) / 2
+                # top = (height - spot.height) / 2
+                # right = (width + spot.width) / 2
+                # bottom = (height + spot.height) / 2
+                #
+                # pillow_image.crop((left, top, right, bottom)).save('partial.png')
+
                 # define the 4 points of tilted rectangle
                 rect_points = [
                     [spot.center_x - spot.width / 2 * cos(spot.rotation_angle) - spot.height / 2 * sin(spot.rotation_angle),
