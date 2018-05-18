@@ -3,6 +3,7 @@ from django.utils import timezone
 
 from electricity.parking.models import ParkingSpot, CameraInput
 import numpy as np
+import urllib
 import cv2
 import imutils
 from PIL import Image
@@ -16,23 +17,39 @@ from electricity.predictor.predictor import Predictor, NN_INPUT_SIZE
 RED = (0, 0, 255)
 GREEN = (0, 255, 0)
 
+
+def returnFrameThroughStream(url):
+    video = cv2.VideoCapture()
+    video.open(url)
+    success, image = video.read()
+    return success, image
+
+
+def returnFrameThroughPoolling(url):
+    url_response = urllib.urlopen(url)
+    img_array = np.array(bytearray(url_response.read()), dtype=np.uint8)
+    img = cv2.imdecode(img_array, -1)
+    return True, img
+
+
 @background()
 def refresh_frames():
     logging.info("Refreshing frames")
     for camera in CameraInput.objects.filter(is_active=True):
-        video = cv2.VideoCapture()
-        video.open(camera.url)
-        success, image = video.read()
+        if camera.is_stream:
+            success, image = returnFrameThroughStream(camera.url)
+        else:
+            success, image = returnFrameThroughStream(camera.url)
+
         if success:
             for spot in camera.parking_spots.all():
-
                 # crop the rectangle
                 simage = subimage(image, center=(spot.center_x, spot.center_y), theta=spot.rotation_angle,
                                   width=spot.width, height=spot.height)
                 cv2.imwrite('partial.png', simage)
                 # make the prediction
-                spot.parking_spot.is_occupied = Predictor.predict(image_path="partial.png")
-                spot.parking_spot.save()
+                spot.is_occupied = Predictor.predict(image_path="partial.png")
+                spot.save()
 
                 # # crop the rectangle
                 # pillow_image = PIL.Image.fromarray(image)
@@ -62,7 +79,7 @@ def refresh_frames():
                 ]
 
                 # add the tilted rectangle on image
-                if spot.parking_spot.is_occupied:
+                if spot.is_occupied:
                     #cv2.circle(image, (spot.center_x, spot.center_y), min(spot.width/2, spot.height/2), RED, 2)
                     cv2.polylines(image, np.int32([rect_points]), True, RED, 2)
 

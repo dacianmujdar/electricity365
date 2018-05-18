@@ -8,6 +8,8 @@ class CameraInput(models.Model):
     url = models.TextField(help_text="The audio stream url")
     name = models.CharField(max_length=200)
     is_active = models.BooleanField(default=True, help_text='True if the audio stream is working')
+    is_stream = models.BooleanField(default=True, help_text='True if the input is stream / False if the link is used '
+                                                            'for polling.')
 
     def __unicode__(self):
         return self.name
