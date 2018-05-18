@@ -13,7 +13,7 @@ class CameraInput(models.Model):
         return self.name
 
 
-class CameraParkingSpot(models.Model):
+class ParkingSpot(models.Model):
     """
     The information you need to identify the parking spot in video
     """
@@ -24,16 +24,12 @@ class CameraParkingSpot(models.Model):
     height = models.IntegerField(verbose_name='Height')
     rotation_angle = models.IntegerField(default=0, verbose_name='Rotation Angle')
 
-    def __unicode__(self):
-        return "({} - {})  {} x {} px {} deg from {}".format(self.center_x, self.center_y, self.width, self.height, self.rotation_angle, self.camera)
-
-
-class ParkingSpot(models.Model):
-    camera_parking_spot = models.OneToOneField(CameraParkingSpot, verbose_name='Camera parking spot',
-                                               related_name='parking_spot')
     latitude = models.FloatField()
     longitude = models.FloatField()
     is_occupied = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return "{} {} Parking spot for {}".format(self.latitude, self.longitude, self.camera_parking_spot)
+        return "lat {} / lon {} - rect: ({} x {}) - {} - {} - {} from camera {} ".format(self.latitude, self.longitude,
+                                                                                         self.center_x, self.center_y,
+                                                                                         self.width, self.height,
+                                                                                         self.rotation_angle, self.camera)

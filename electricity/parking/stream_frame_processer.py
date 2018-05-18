@@ -1,7 +1,7 @@
 import PIL
 from django.utils import timezone
 
-from electricity.parking.models import CameraParkingSpot, CameraInput
+from electricity.parking.models import ParkingSpot, CameraInput
 import numpy as np
 import cv2
 import imutils

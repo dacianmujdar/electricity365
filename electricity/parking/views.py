@@ -5,8 +5,8 @@ import math
 
 from rest_framework import generics
 
-from electricity.parking.models import ParkingSpot
-from electricity.parking.serializers import ParkingSpotSerializer
+from electricity.parking.models import ParkingSpot, CameraInput
+from electricity.parking.serializers import ParkingSpotSerializer, ParkingSerializer
 
 
 def get_bounding_box(latitude_in_degrees, longitude_in_degrees, half_side_in_meters):
@@ -35,18 +35,19 @@ def nearby_spots(location_latitude, location_longitude, radius):
 
 
 class ParkingSpotList(generics.ListAPIView):
-    serializer_class = ParkingSpotSerializer
+    serializer_class = ParkingSerializer
 
     def get_queryset(self):
-        location_latitude = self.request.GET.get('lat', None)
-        location_longitude = self.request.GET.get('lon', None)
-        radius = self.request.GET.get('radius', None)
-
-        # if lat, lon and radius are provided - fetch only the parking spots situated nearby
-        if location_latitude and location_longitude and radius:
-            return nearby_spots(location_latitude, location_longitude, radius)
-        else:
-            return ParkingSpot.objects.all()
+        # location_latitude = self.request.GET.get('lat', None)
+        # location_longitude = self.request.GET.get('lon', None)
+        # radius = self.request.GET.get('radius', None)
+        #
+        # # if lat, lon and radius are provided - fetch only the parking spots situated nearby
+        # if location_latitude and location_longitude and radius:
+        #     return nearby_spots(location_latitude, location_longitude, radius)
+        # else:
+        #     return ParkingSpot.objects.all()
+        return CameraInput.objects.all()
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)

@@ -2,18 +2,37 @@ import numpy as np
 
 from rest_framework import serializers
 
-from electricity.parking.models import ParkingSpot
+from electricity.parking.models import ParkingSpot, CameraInput
 
 PARKING_URL = "static/parking{}.png"
 
 
 class ParkingSpotSerializer(serializers.ModelSerializer):
-    camera_image = serializers.SerializerMethodField()
 
     class Meta:
         model = ParkingSpot
-        fields = ('latitude', 'longitude', 'is_occupied', 'camera_image')
+        fields = ('latitude', 'longitude', 'is_occupied')
+
+
+class ParkingSerializer(serializers.ModelSerializer):
+    image_path = serializers.SerializerMethodField()
+    nr_free_spots = serializers.SerializerMethodField()
+    nr_occupied_spots = serializers.SerializerMethodField()
+    parking_spots = ParkingSpotSerializer(many=True)
+
+    class Meta:
+        model = CameraInput
+        fields = ('image_path', 'name', 'nr_free_spots', 'nr_occupied_spots', 'parking_spots')
 
     @staticmethod
-    def get_camera_image(parking_spot):
-        return PARKING_URL.format(parking_spot.camera_parking_spot.camera.id)
+    def get_image_path(parking):
+        return PARKING_URL.format(parking.id)
+
+    @staticmethod
+    def get_nr_free_spots(parking):
+        return parking.parking_spots.filter(is_occupied=True).count()
+
+    @staticmethod
+    def get_nr_occupied_spots(parking):
+        return parking.parking_spots.filter(is_occupied=False).count()
+
