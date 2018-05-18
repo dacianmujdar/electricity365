@@ -5,7 +5,7 @@ from django.db import models
 
 
 class CameraInput(models.Model):
-    url = models.URLField(max_length=400, help_text="The audio stream url")
+    url = models.TextField(help_text="The audio stream url")
     name = models.CharField(max_length=200)
     is_active = models.BooleanField(default=True, help_text='True if the audio stream is working')
 
@@ -18,14 +18,14 @@ class CameraParkingSpot(models.Model):
     The information you need to identify the parking spot in video
     """
     camera = models.ForeignKey('CameraInput', verbose_name='Camera input', related_name='parking_spots')
-    upper_right_x = models.IntegerField(verbose_name='Upper Right x')
-    upper_right_y = models.IntegerField(verbose_name='Upper Right y')
-    bottom_left_x = models.IntegerField(verbose_name='Bottom Left x')
-    bottom_right_y = models.IntegerField(verbose_name='Bottom Right y')
+    center_x = models.IntegerField(verbose_name='Center x')
+    center_y = models.IntegerField(verbose_name='Center y')
+    width = models.IntegerField(verbose_name='Width')
+    height = models.IntegerField(verbose_name='Height')
     rotation_angle = models.IntegerField(default=0, verbose_name='Rotation Angle')
 
     def __unicode__(self):
-        return "[{} - {}, {} - {}] from {}".format(self.upper_right_x, self.upper_right_y, self.bottom_left_x, self.bottom_right_y, self.camera)
+        return "({} - {})  {} x {} px {} deg from {}".format(self.center_x, self.center_y, self.width, self.height, self.rotation_angle, self.camera)
 
 
 class ParkingSpot(models.Model):
@@ -36,4 +36,4 @@ class ParkingSpot(models.Model):
     is_occupied = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return "Parking spot for {}".format(self.camera_parking_spot)
+        return "{} {} Parking spot for {}".format(self.latitude, self.longitude, self.camera_parking_spot)

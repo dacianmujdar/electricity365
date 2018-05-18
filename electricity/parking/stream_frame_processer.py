@@ -1,3 +1,4 @@
+import PIL
 from django.utils import timezone
 
 from electricity.parking.models import CameraParkingSpot, CameraInput
@@ -10,51 +11,52 @@ from math import cos, sin, pi
 from background_task import background
 
 
-
-from electricity.predictor.predictor import Predictor
+from electricity.predictor.predictor import Predictor, NN_INPUT_SIZE
 
 RED = (0, 0, 255)
 GREEN = (0, 255, 0)
 
-
 @background()
 def refresh_frames():
     logging.info("Refreshing frames")
-    for camera in CameraInput.objects.all():
+    for camera in CameraInput.objects.filter(is_active=True):
         video = cv2.VideoCapture()
         video.open(camera.url)
         success, image = video.read()
         if success:
-            for camera_parking_spot in camera.parking_spots.all():
-                camera_parking_spot = camera.parking_spots.first()
-                upper_left = (camera_parking_spot.upper_right_x, camera_parking_spot.upper_right_y)
-                bottom_right = (camera_parking_spot.bottom_left_x, camera_parking_spot.bottom_right_y)
+            for spot in camera.parking_spots.all():
 
-                #rect_img = imutils.rotate_bound(image, camera_parking_spot.rotation_angle)[upper_left[1]: bottom_right[1], upper_left[0]: bottom_right[0]]
-                #rect_img = image[upper_left[1]: bottom_right[1], upper_left[0]: bottom_right[0]]
-
-                center = (832, 670)
-                theta = 40
-                width = 105
-                height = 164
-                simage = subimage(image, center=center, theta=theta, width=width, height=height)
+                # crop the rectangle
+                simage = subimage(image, center=(spot.center_x, spot.center_y), theta=spot.rotation_angle,
+                                  width=spot.width, height=spot.height)
                 cv2.imwrite('partial.png', simage)
+                # make the prediction
+                spot.parking_spot.is_occupied = Predictor.predict(image_path="partial.png")
+                spot.parking_spot.save()
 
-                camera_parking_spot.parking_spot.is_occupied = Predictor.predict(image_path="partial.png")
-                camera_parking_spot.parking_spot.save()
-
+                # define the 4 points of tilted rectangle
                 rect_points = [
-                    [center[0] - height / 2 * cos(theta) - width / 2 * sin(theta), center[1] - height / 2 * sin(theta) + width / 2 * cos(theta)],
-                    [center[0] + height / 2 * cos(theta) - width / 2 * sin(theta), center[1] + height / 2 * sin(theta) + width / 2 * cos(theta)],
-                    [center[0] + height / 2 * cos(theta) + width / 2 * sin(theta), center[1] + height / 2 * sin(theta) - width / 2 * cos(theta)],
-                    [center[0] - height / 2 * cos(theta) + width / 2 * sin(theta), center[1] - height / 2 * sin(theta) - width / 2 * cos(theta)]
+                    [spot.center_x - spot.width / 2 * cos(spot.rotation_angle) - spot.height / 2 * sin(spot.rotation_angle),
+                     spot.center_y - spot.width / 2 * sin(spot.rotation_angle) + spot.height / 2 * cos(spot.rotation_angle)],
+
+                    [spot.center_x + spot.width / 2 * cos(spot.rotation_angle) - spot.height / 2 * sin(spot.rotation_angle),
+                     spot.center_y + spot.width / 2 * sin(spot.rotation_angle) + spot.height / 2 * cos(spot.rotation_angle)],
+
+                    [spot.center_x + spot.width / 2 * cos(spot.rotation_angle) + spot.height / 2 * sin(spot.rotation_angle),
+                     spot.center_y + spot.width / 2 * sin(spot.rotation_angle) - spot.height / 2 * cos(spot.rotation_angle)],
+
+                    [spot.center_x - spot.width / 2 * cos(spot.rotation_angle) + spot.height / 2 * sin(spot.rotation_angle),
+                     spot.center_y - spot.width / 2 * sin(spot.rotation_angle) - spot.height / 2 * cos(spot.rotation_angle)]
 
                 ]
 
-                if camera_parking_spot.parking_spot.is_occupied:
+                # add the tilted rectangle on image
+                if spot.parking_spot.is_occupied:
+                    #cv2.circle(image, (spot.center_x, spot.center_y), min(spot.width/2, spot.height/2), RED, 2)
                     cv2.polylines(image, np.int32([rect_points]), True, RED, 2)
-                    #cv2.rectangle(image, upper_left, bottom_right, RED, 1)
+
                 else:
+                    #cv2.circle(image, (spot.center_x, spot.center_y), min(spot.width/2, spot.height/2), GREEN, 2)
                     cv2.polylines(image, np.int32([rect_points]), True, GREEN, 2)
 
             cv2.imwrite('static/parking{}.png'.format(camera.id), image)
@@ -71,6 +73,10 @@ def subimage(image, center, theta, width, height):
 
    # Uncomment for theta in radians
    #theta *= 180/np.pi
+   theta = 30
+   aux = width
+   width = height
+   height = aux
 
    shape = image.shape[:2]
 
