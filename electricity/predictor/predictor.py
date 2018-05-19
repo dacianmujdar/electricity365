@@ -32,6 +32,7 @@ class Predictor:
         if not Predictor._predictor:
             Predictor._predictor = Predictor._load_model()
         image = Image.open(image_path)
+
         image_resized = image.resize(NN_INPUT_SIZE, PIL.Image.ANTIALIAS)
         np_array = np.array(image_resized)[:, :, :3]
         #image_resized.save('partial_resized.png')

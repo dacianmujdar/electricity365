@@ -29,6 +29,7 @@ def returnFrameThroughPoolling(url):
     url_response = urllib.urlopen(url)
     img_array = np.array(bytearray(url_response.read()), dtype=np.uint8)
     img = cv2.imdecode(img_array, -1)
+    import pdb; pdb.set_trace()
     return True, img
 
 
@@ -39,8 +40,7 @@ def refresh_frames():
         if camera.is_stream:
             success, image = returnFrameThroughStream(camera.url)
         else:
-            success, image = returnFrameThroughStream(camera.url)
-
+            success, image = returnFrameThroughPoolling(camera.url)
         if success:
             for spot in camera.parking_spots.all():
                 # crop the rectangle
@@ -90,6 +90,7 @@ def refresh_frames():
             cv2.imwrite('static/parking{}.png'.format(camera.id), image)
         else:
             logging.error("Failed to open video")
+    logging.info("Frame processing cycle completed")
 
 
 def subimage(image, center, theta, width, height):
