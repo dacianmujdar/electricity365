@@ -29,7 +29,6 @@ def returnFrameThroughPoolling(url):
     url_response = urllib.urlopen(url)
     img_array = np.array(bytearray(url_response.read()), dtype=np.uint8)
     img = cv2.imdecode(img_array, -1)
-    import pdb; pdb.set_trace()
     return True, img
 
 
@@ -42,52 +41,25 @@ def refresh_frames():
         else:
             success, image = returnFrameThroughPoolling(camera.url)
         if success:
-            for spot in camera.parking_spots.all():
-                # crop the rectangle
-                simage = subimage(image, center=(spot.center_x, spot.center_y), theta=spot.rotation_angle,
-                                  width=spot.width, height=spot.height)
-                cv2.imwrite('partial.png', simage)
-                # make the prediction
-                spot.is_occupied = Predictor.predict(image_path="partial.png")
-                spot.save()
+            for camera_parking_spot in camera.parking_spots.all():
+                try:
+                    upper_left = [camera_parking_spot.upper_right_x, camera_parking_spot.upper_right_y]
+                    bottom_right = [camera_parking_spot.bottom_left_x, camera_parking_spot.bottom_right_y]
 
-                # # crop the rectangle
-                # pillow_image = PIL.Image.fromarray(image)
-                # pillow_image.rotate(spot.rotation_angle)
-                # width, height = pillow_image.size  # Get dimensions
-                # left = (width - spot.width) / 2
-                # top = (height - spot.height) / 2
-                # right = (width + spot.width) / 2
-                # bottom = (height + spot.height) / 2
-                #
-                # pillow_image.crop((left, top, right, bottom)).save('partial.png')
+                    #rect_img = image[upper_left[0]: bottom_right[0], upper_left[1]: bottom_right[1]]
+                    rect_img = image[upper_left[1]: bottom_right[1], upper_left[0]: bottom_right[0]]
+                    cv2.imwrite('partial.png', rect_img)
+                    camera_parking_spot.is_occupied = Predictor.predict(image_path="partial.png")
+                    camera_parking_spot.save()
 
-                # define the 4 points of tilted rectangle
-                rect_points = [
-                    [spot.center_x - spot.width / 2 * cos(spot.rotation_angle) - spot.height / 2 * sin(spot.rotation_angle),
-                     spot.center_y - spot.width / 2 * sin(spot.rotation_angle) + spot.height / 2 * cos(spot.rotation_angle)],
-
-                    [spot.center_x + spot.width / 2 * cos(spot.rotation_angle) - spot.height / 2 * sin(spot.rotation_angle),
-                     spot.center_y + spot.width / 2 * sin(spot.rotation_angle) + spot.height / 2 * cos(spot.rotation_angle)],
-
-                    [spot.center_x + spot.width / 2 * cos(spot.rotation_angle) + spot.height / 2 * sin(spot.rotation_angle),
-                     spot.center_y + spot.width / 2 * sin(spot.rotation_angle) - spot.height / 2 * cos(spot.rotation_angle)],
-
-                    [spot.center_x - spot.width / 2 * cos(spot.rotation_angle) + spot.height / 2 * sin(spot.rotation_angle),
-                     spot.center_y - spot.width / 2 * sin(spot.rotation_angle) - spot.height / 2 * cos(spot.rotation_angle)]
-
-                ]
-
-                # add the tilted rectangle on image
-                if spot.is_occupied:
-                    #cv2.circle(image, (spot.center_x, spot.center_y), min(spot.width/2, spot.height/2), RED, 2)
-                    cv2.polylines(image, np.int32([rect_points]), True, RED, 2)
-
-                else:
-                    #cv2.circle(image, (spot.center_x, spot.center_y), min(spot.width/2, spot.height/2), GREEN, 2)
-                    cv2.polylines(image, np.int32([rect_points]), True, GREEN, 2)
-
+                    if camera_parking_spot.is_occupied:
+                        cv2.rectangle(image, tuple(upper_left), tuple(bottom_right), RED, 2)
+                    else:
+                        cv2.rectangle(image, tuple(upper_left), tuple(bottom_right), GREEN, 2)
+                except:
+                    pass
             cv2.imwrite('static/parking{}.png'.format(camera.id), image)
+
         else:
             logging.error("Failed to open video")
     logging.info("Frame processing cycle completed")

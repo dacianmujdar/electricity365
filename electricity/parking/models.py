@@ -20,18 +20,17 @@ class ParkingSpot(models.Model):
     The information you need to identify the parking spot in video
     """
     camera = models.ForeignKey('CameraInput', verbose_name='Camera input', related_name='parking_spots')
-    center_x = models.IntegerField(verbose_name='Center x')
-    center_y = models.IntegerField(verbose_name='Center y')
-    width = models.IntegerField(verbose_name='Width')
-    height = models.IntegerField(verbose_name='Height')
-    rotation_angle = models.IntegerField(default=0, verbose_name='Rotation Angle')
+    upper_right_x = models.IntegerField(verbose_name='Upper Right x')
+    upper_right_y = models.IntegerField(verbose_name='Upper Right y')
+    bottom_left_x = models.IntegerField(verbose_name='Bottom Left x')
+    bottom_right_y = models.IntegerField(verbose_name='Bottom Right y')
 
     latitude = models.FloatField()
     longitude = models.FloatField()
     is_occupied = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return "lat {} / lon {} - rect: ({} x {}) - {} - {} - {} from camera {} ".format(self.latitude, self.longitude,
-                                                                                         self.center_x, self.center_y,
-                                                                                         self.width, self.height,
-                                                                                         self.rotation_angle, self.camera)
+        return "lat {} / lon {} - rect: [{} x {}] - [{} x {}] - from camera {} ".format(self.latitude, self.longitude,
+                                                                                        self.upper_right_x, self.upper_right_y,
+                                                                                        self.bottom_left_x, self.bottom_right_y,
+                                                                                        self.camera)
