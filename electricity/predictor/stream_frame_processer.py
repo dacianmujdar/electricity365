@@ -27,12 +27,12 @@ class Predictor:
     def load_model(cls):
         if not cls._neural_network_predictor:
             # load json and create model
-            json_file = open('parking_project/parking_space_detector/neural_network/model.json', 'r')
+            json_file = open('electricity/predictor/neural_network/neural_network/model.json', 'r')
             loaded_model_json = json_file.read()
             json_file.close()
             cls._neural_network_predictor = model_from_json(loaded_model_json)
             # load weights into new model
-            cls._neural_network_predictor.load_weights("parking_project/parking_space_detector/neural_network/model.h5")
+            cls._neural_network_predictor.load_weights("electricity/predictor/neural_network/neural_network/model.h5")
 
         return cls._neural_network_predictor
 
