@@ -71,7 +71,7 @@ def refresh_frames(cycle):
             except Exception as e:
                 print("--------------------- exception occured {} ---------------------".format(e))
                 pass
-        image_path = 'camera{}.png'.format(camera.parking.id)
+        image_path = 'camera{}.png'.format(camera.id)
         image.save('static' + image_path)
         MediaStorage.upload_image(image_path)
     print("--------------------- Finish refresh frame cycle {} ---------------------".format(cycle))
