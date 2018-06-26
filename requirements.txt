@@ -74,6 +74,5 @@ imutils==0.4.6
 numpy
 keras
 tensorflow
-pygraphviz
 celery                  # celery and redis are for queuing tasks
 redis
