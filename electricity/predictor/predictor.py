@@ -31,8 +31,11 @@ class Predictor:
         """
         if not Predictor._predictor:
             Predictor._predictor = Predictor._load_model()
-        image = Image.open(image_path)
+        #import pdb; pdb.set_trace()
+        image = Image.open('partial.png')
+
         image_resized = image.resize(NN_INPUT_SIZE, PIL.Image.ANTIALIAS)
         np_array = np.array(image_resized)[:, :, :3]
-        #image_resized.save('partial_resized.png')
+        #import pdb; pdb.set_trace()
+        image_resized.save('partial_resized.png')
         return Predictor._predictor.predict(np_array.reshape(1, 64, 64, 3))[0][0] == 1

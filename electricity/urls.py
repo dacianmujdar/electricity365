@@ -15,9 +15,6 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from django.utils import timezone
-
-from electricity.parking.stream_frame_processer import refresh_frames
 from electricity.parking.views import ParkingSpotList
 
 urlpatterns = [
