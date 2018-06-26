@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from electricity.parking.views import ParkingSpotList
+from electricity.predictor.stream_frame_processer import refresh_frames
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -23,3 +24,8 @@ urlpatterns = [
 
 ]
 
+start_task = False
+
+if not start_task:
+    start_task = True
+    refresh_frames.delay(0)

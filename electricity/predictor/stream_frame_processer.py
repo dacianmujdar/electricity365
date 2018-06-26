@@ -3,7 +3,7 @@ import numpy as np
 from PIL import Image, ImageDraw
 import requests
 from keras.models import model_from_json
-
+from electricity.celery import app
 from io import BytesIO
 
 from electricity.common.media_storages import MediaStorage
