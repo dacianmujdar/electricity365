@@ -7,3 +7,5 @@ env/
 .idea/
 media/
 db.sqlite3
+celerybeat-schedule.db
+local_celryconfig.py
