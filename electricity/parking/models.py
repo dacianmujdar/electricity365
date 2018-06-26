@@ -23,7 +23,7 @@ class ParkingSpot(models.Model):
     upper_right_x = models.IntegerField(verbose_name='Upper Right x')
     upper_right_y = models.IntegerField(verbose_name='Upper Right y')
     bottom_left_x = models.IntegerField(verbose_name='Bottom Left x')
-    bottom_right_y = models.IntegerField(verbose_name='Bottom Right y')
+    bottom_left_y = models.IntegerField(verbose_name='Bottom Right y')
 
     # map localization
     latitude = models.FloatField()
