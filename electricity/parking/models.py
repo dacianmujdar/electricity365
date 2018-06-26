@@ -8,7 +8,7 @@ class CameraInput(models.Model):
     url = models.TextField(help_text="The audio stream url")
     name = models.CharField(max_length=200)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -31,7 +31,7 @@ class ParkingSpot(models.Model):
 
     is_occupied = models.BooleanField(default=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return "{} - lat {} / lon {} - rect: [{} x {}] - [{} x {}] - from camera {} ".format(self.code, self.latitude, self.longitude,
                                                                                              self.upper_right_x, self.upper_right_y,
                                                                                              self.bottom_left_x, self.bottom_right_y,
