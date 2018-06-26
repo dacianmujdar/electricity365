@@ -2,6 +2,7 @@ import numpy as np
 
 from rest_framework import serializers
 
+from electricity import settings
 from electricity.parking.models import ParkingSpot, CameraInput
 
 PARKING_URL = "static/parking{}.png"
@@ -26,7 +27,7 @@ class ParkingSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_image_path(parking):
-        return PARKING_URL.format(parking.id)
+        return settings.MEDIA_URL + 'camera{}.png'.format(parking.id)
 
     @staticmethod
     def get_nr_free_spots(parking):

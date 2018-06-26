@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import environ
+
+env = environ.Env()  # set the environment
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -41,6 +44,7 @@ INSTALLED_APPS = [
     'electricity.parking',
     'background_task',
     'corsheaders',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -158,3 +162,33 @@ CORS_ALLOW_HEADERS = (
     '*',
 )
 CORS_EXPOSE_HEADERS = list(CORS_ALLOW_HEADERS)
+
+# Database
+# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
+DATABASES = {
+    'default': env.db('DATABASE_URL', 'postgres://parkinguser:pass@localhost/electricitydb')
+}
+
+# STORAGE
+# ------------------------------------------------------------------------------
+USE_AWS = env.bool('USE_AWS', False)  # used for conditional imports
+
+BROKER_POOL_LIMIT = 3
+BROKER_URL = 'amqp://bdqnhtsp:okrRIv5DSiHRJ7mRTULvKCimsCz4CC9B@baboon.rmq.cloudamqp.com/bdqnhtsp'
+
+if USE_AWS:
+    AWS_ACCESS_KEY_ID = env.str('AWS_ACCESS_KEY_ID', None)
+    INSTALLED_APPS += ('storages',)
+    AWS_QUERYSTRING_AUTH = False
+    # if aws is to be used, the variable are required!
+    AWS_SECRET_ACCESS_KEY = env.str('AWS_SECRET_ACCESS_KEY', None)
+    AWS_STORAGE_BUCKET_NAME = env.str('S3_BUCKET_NAME', None)
+    AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+
+    STATICFILES_LOCATION = 'static'
+    STATICFILES_STORAGE = 'electricity.common.custom_storages.StaticStorage'
+    STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, STATICFILES_LOCATION)
+
+    MEDIAFILES_LOCATION = 'media'
+    MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
+    DEFAULT_FILE_STORAGE = 'electricity.common.custom_storages.MediaStorage'
