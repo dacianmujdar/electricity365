@@ -69,7 +69,7 @@ def refresh_frames(cycle):
                     draw.rectangle((upper_left, bottom_right), outline=GREEN)
                     draw.text(upper_left, camera_parking_spot.code, fill=GREEN)
             except Exception as e:
-                print("--------------------- exception occured {} ---------------------".format(e.message))
+                print("--------------------- exception occured {} ---------------------".format(e))
                 pass
         image_path = 'camera{}.png'.format(camera.parking.id)
         image.save('static' + image_path)
