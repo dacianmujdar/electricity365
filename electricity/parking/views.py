@@ -5,6 +5,7 @@ from rest_framework import generics
 
 from electricity.parking.models import CameraInput
 from electricity.parking.serializers import ParkingSerializer
+from electricity.predictor.stream_frame_processer import refresh_frames
 
 
 class ParkingSpotList(generics.ListAPIView):
