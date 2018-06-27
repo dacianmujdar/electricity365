@@ -187,3 +187,5 @@ if USE_AWS:
     MEDIAFILES_LOCATION = 'media'
     MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
     DEFAULT_FILE_STORAGE = 'electricity.common.custom_storages.MediaStorage'
+
+CURRENT_HOST = 'http://electricity-365.herokuapp.com/'

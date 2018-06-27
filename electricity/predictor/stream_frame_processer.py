@@ -1,18 +1,14 @@
 import PIL
 import numpy as np
-from PIL import Image, ImageDraw
+from PIL import Image
 import requests
 from keras.models import model_from_json
 
-from electricity import settings
 from electricity.celery import app
 from io import BytesIO
 
-from electricity.common.media_storages import MediaStorage
 from electricity.parking.models import CameraInput
 
-RED = (245, 10, 10)
-GREEN = (0, 255, 0)
 NN_INPUT_SIZE = (64, 64)
 
 
@@ -59,25 +55,10 @@ def refresh_frames(cycle):
                 camera_parking_spot.is_occupied = neural_network_predictor.predict(np.array(resized_image).reshape(1, 64, 64, 3))[0][0] == 1
                 camera_parking_spot.save()
 
-                # add coloured rectangle
-                upper_left = (camera_parking_spot.upper_right_x, camera_parking_spot.upper_right_y)
-                bottom_right = (camera_parking_spot.bottom_left_x, camera_parking_spot.bottom_left_y)
-
-                draw = ImageDraw.Draw(image)
-                if camera_parking_spot.is_occupied:
-                    draw.rectangle((upper_left, bottom_right), outline=RED)
-                    draw.text(upper_left, camera_parking_spot.code, fill=RED)
-                else:
-                    draw.rectangle((upper_left, bottom_right), outline=GREEN)
-                    draw.text(upper_left, camera_parking_spot.code, fill=GREEN)
             except Exception as e:
                 print("--------------------- exception occured {} ---------------------".format(e))
                 pass
-        image_path = 'camera{}.png'.format(camera.id)
-        image.save(settings.MEDIA_ROOT + image_path)
 
-        # add this if we want to use AWS only
-        # MediaStorage.upload_image(image_path)
     print("--------------------- Finish refresh frame cycle {} ---------------------".format(cycle))
     refresh_frames.apply_async((cycle + 1,), countdown=5)
 

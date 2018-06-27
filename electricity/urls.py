@@ -18,12 +18,14 @@ from django.contrib import admin
 from django.conf.urls.static import static
 
 from electricity import settings
-from electricity.parking.views import ParkingSpotList
+from electricity.parking.views import ParkingSpotList, get_parking_snapshot
 from electricity.predictor.stream_frame_processer import refresh_frames
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^parking-spots/$', ParkingSpotList.as_view(), name='parking-spot-list'),
+    url(r'^cameras/(?P<pk>[0-9]+)/snapshot/$', get_parking_snapshot, name='parking-spot-list'),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

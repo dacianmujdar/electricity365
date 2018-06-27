@@ -27,7 +27,7 @@ class ParkingSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_image_path(parking):
-        return settings.MEDIA_URL + 'camera{}.png'.format(parking.id)
+        return settings.CURRENT_HOST + 'cameras/{}/snapshot/'.format(parking.id)
 
     @staticmethod
     def get_nr_free_spots(parking):
