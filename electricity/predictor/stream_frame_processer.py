@@ -11,6 +11,8 @@ from electricity.parking.models import CameraInput
 
 NN_INPUT_SIZE = (64, 64)
 
+SNAPSHOT_LOCATION = 'snapshots/{}.png'
+
 
 def return_frame_from_url(url):
     response = requests.get(url)
@@ -58,7 +60,10 @@ def refresh_frames(cycle):
             except Exception as e:
                 print("--------------------- exception occured {} ---------------------".format(e))
                 pass
+        image.save(SNAPSHOT_LOCATION.format(camera.id))
 
+        # add this if we want to use AWS only
+        # MediaStorage.upload_image(image_path)
     print("--------------------- Finish refresh frame cycle {} ---------------------".format(cycle))
     refresh_frames.apply_async((cycle + 1,), countdown=5)
 

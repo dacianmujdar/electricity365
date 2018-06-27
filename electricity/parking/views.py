@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.http import Http404
 from django.http import HttpResponse
 from rest_framework import generics
 from rest_framework.generics import get_object_or_404
 
 from electricity.parking.models import CameraInput
 from electricity.parking.serializers import ParkingSerializer
-from electricity.predictor.stream_frame_processer import refresh_frames, return_frame_from_url
+from electricity.predictor.stream_frame_processer import refresh_frames, SNAPSHOT_LOCATION
 from PIL import Image, ImageDraw
 
 RED = (245, 10, 10)
@@ -26,7 +27,11 @@ class ParkingSpotList(generics.ListAPIView):
 
 def get_parking_snapshot(request, pk):
     camera = get_object_or_404(CameraInput, id=pk)
-    image = return_frame_from_url(camera.url)
+    try:
+        image = Image.open(SNAPSHOT_LOCATION.format(pk))
+    except:
+        raise Http404()
+
     for camera_parking_spot in camera.parking_spots.all():
         # add coloured rectangle
         upper_left = (camera_parking_spot.upper_right_x, camera_parking_spot.upper_right_y)
