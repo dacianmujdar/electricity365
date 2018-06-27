@@ -73,7 +73,6 @@ def refresh_frames(cycle):
             except Exception as e:
                 print("--------------------- exception occured {} ---------------------".format(e))
                 pass
-        import pdb; pdb.set_trace()
         image.save(SNAPSHOT_LOCATION.format(camera.id))
 
     print("--------------------- Finish refresh frame cycle {} ---------------------".format(cycle))
