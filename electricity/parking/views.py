@@ -28,7 +28,7 @@ class ParkingSpotList(generics.ListAPIView):
 def get_parking_snapshot(request, pk):
     get_object_or_404(CameraInput, id=pk)
     try:
-        response = HttpResponse(open(SNAPSHOT_LOCATION.format(pk), 'rb').read(), content_type="image/jpg")
+        response = HttpResponse(open(SNAPSHOT_LOCATION.format(pk), 'rb').read(), content_type="image/png")
     except:
         raise Http404
     return response
