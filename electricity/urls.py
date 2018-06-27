@@ -26,8 +26,7 @@ urlpatterns = [
     url(r'^parking-spots/$', ParkingSpotList.as_view(), name='parking-spot-list'),
     url(r'^cameras/(?P<pk>[0-9]+)/snapshot/$', get_parking_snapshot, name='parking-spot-list'),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
+]
 
 start_task = False
 

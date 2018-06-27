@@ -26,24 +26,9 @@ class ParkingSpotList(generics.ListAPIView):
 
 
 def get_parking_snapshot(request, pk):
-    camera = get_object_or_404(CameraInput, id=pk)
+    get_object_or_404(CameraInput, id=pk)
     try:
-        image = Image.open(SNAPSHOT_LOCATION.format(pk))
+        response = HttpResponse(open(SNAPSHOT_LOCATION.format(pk), 'rb').read(), content_type="image/jpg")
     except:
-        raise Http404()
-
-    for camera_parking_spot in camera.parking_spots.all():
-        # add coloured rectangle
-        upper_left = (camera_parking_spot.upper_right_x, camera_parking_spot.upper_right_y)
-        bottom_right = (camera_parking_spot.bottom_left_x, camera_parking_spot.bottom_left_y)
-
-        draw = ImageDraw.Draw(image)
-        if camera_parking_spot.is_occupied:
-            draw.rectangle((upper_left, bottom_right), outline=RED)
-            draw.text(upper_left, camera_parking_spot.code, fill=RED)
-        else:
-            draw.rectangle((upper_left, bottom_right), outline=GREEN)
-            draw.text(upper_left, camera_parking_spot.code, fill=GREEN)
-    # get image
-    image.save('camera.png')
-    return HttpResponse(open('camera.png', 'rb').read(), content_type="image/jpg")
+        raise Http404
+    return response
