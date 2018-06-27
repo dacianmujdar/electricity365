@@ -128,6 +128,10 @@ STATICFILES_DIRS = (
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# Media files - Anything added at runtime
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media').replace('\\', '/')
+MEDIA_URL = '/media/'
+
 
 # CORS SETTINGS
 # ------------------------------------------------------------------------------
@@ -166,6 +170,7 @@ USE_AWS = env.bool('USE_AWS', False)  # used for conditional imports
 BROKER_POOL_LIMIT = 3
 BROKER_URL = 'amqp://bdqnhtsp:okrRIv5DSiHRJ7mRTULvKCimsCz4CC9B@baboon.rmq.cloudamqp.com/bdqnhtsp'
 
+# AWS CONFIG
 if USE_AWS:
     AWS_ACCESS_KEY_ID = env.str('AWS_ACCESS_KEY_ID', None)
     INSTALLED_APPS += ('storages',)

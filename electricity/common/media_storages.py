@@ -16,7 +16,7 @@ class MediaStorage:
             aws_key = boto.s3.key.Key(cls._bucket)
             aws_key.key = 'media/' + path
 
-        aws_key.set_contents_from_filename('static' + path)
+        aws_key.set_contents_from_filename('media' + path)
 
         file_link = settings.MEDIA_URL + path
 

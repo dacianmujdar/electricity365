@@ -3,6 +3,8 @@ import numpy as np
 from PIL import Image, ImageDraw
 import requests
 from keras.models import model_from_json
+
+from electricity import settings
 from electricity.celery import app
 from io import BytesIO
 
@@ -72,8 +74,10 @@ def refresh_frames(cycle):
                 print("--------------------- exception occured {} ---------------------".format(e))
                 pass
         image_path = 'camera{}.png'.format(camera.id)
-        image.save('static' + image_path)
-        MediaStorage.upload_image(image_path)
+        image.save(settings.MEDIA_ROOT + image_path)
+
+        # add this if we want to use AWS only
+        # MediaStorage.upload_image(image_path)
     print("--------------------- Finish refresh frame cycle {} ---------------------".format(cycle))
     refresh_frames.apply_async((cycle + 1,), countdown=5)
 

@@ -15,14 +15,17 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from django.conf.urls.static import static
+
+from electricity import settings
 from electricity.parking.views import ParkingSpotList
 from electricity.predictor.stream_frame_processer import refresh_frames
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^parking-spots/$', ParkingSpotList.as_view(), name='parking-spot-list'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-]
 
 start_task = False
 
