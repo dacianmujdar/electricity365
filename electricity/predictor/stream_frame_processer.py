@@ -73,7 +73,7 @@ def refresh_frames(cycle):
             except Exception as e:
                 print("--------------------- exception occured {} ---------------------".format(e))
                 pass
-        image.save(SNAPSHOT_LOCATION.format(camera.id))
+        image.save(SNAPSHOT_LOCATION.format(camera.id), 'PNG')
 
     print("--------------------- Finish refresh frame cycle {} ---------------------".format(cycle))
     refresh_frames.apply_async((cycle + 1,), countdown=5)
