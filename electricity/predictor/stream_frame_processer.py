@@ -14,7 +14,7 @@ RED = (245, 10, 10)
 GREEN = (0, 255, 0)
 NN_INPUT_SIZE = (64, 64)
 
-SNAPSHOT_LOCATION = 'camera{}.png'
+SNAPSHOT_LOCATION = 'camera{}.jpg'
 
 def return_frame_from_url(url):
     response = requests.get(url)
