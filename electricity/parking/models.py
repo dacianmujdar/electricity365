@@ -7,6 +7,7 @@ from django.db import models
 class CameraInput(models.Model):
     url = models.TextField(help_text="The audio stream url")
     name = models.CharField(max_length=200)
+    last_update = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.name
