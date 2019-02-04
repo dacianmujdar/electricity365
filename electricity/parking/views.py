@@ -10,7 +10,7 @@ from rest_framework.generics import get_object_or_404
 
 from electricity.parking.models import CameraInput
 from electricity.parking.serializers import ParkingSerializer
-from electricity.predictor.stream_frame_processer import return_frame_from_url
+from electricity.predictor.stream_frame_processer import return_frame_from_url, refresh_frames
 
 RED = (245, 10, 10)
 GREEN = (0, 255, 0)
@@ -29,7 +29,7 @@ class ParkingSpotList(generics.ListAPIView):
 def get_parking_snapshot(request, pk):
     # get the camera object
     camera = get_object_or_404(CameraInput, id=pk)
-
+    refresh_frames(1)
     # get the current snapshot
     try:
         image = return_frame_from_url(camera.url)
@@ -39,7 +39,6 @@ def get_parking_snapshot(request, pk):
     request_time = datetime.datetime.now()
     # if (not camera.last_update) or (request_time - camera.last_update).total_seconds() > 15:
     #     return HttpResponse(status=status.HTTP_503_SERVICE_UNAVAILABLE)
-
     # draw the image
     for camera_parking_spot in camera.parking_spots.all():
         # add coloured rectangle
