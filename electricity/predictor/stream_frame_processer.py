@@ -1,5 +1,6 @@
 import numpy as np
 from PIL import Image, ImageDraw
+import PIL
 import requests
 from keras.models import model_from_json
 import datetime
