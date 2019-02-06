@@ -52,6 +52,7 @@ def refresh_frames(cycle):
 
                 # resize to the accepted input of the neural network NN_INPUT_SIZE
                 image = rect_img.resize(NN_INPUT_SIZE, PIL.Image.ANTIALIAS)
+                image = np.array(image)
                 image.shape = (1, 64, 64, 3)
                 image = image.astype('float32') / 255
 
