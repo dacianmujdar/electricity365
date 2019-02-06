@@ -3,6 +3,7 @@ from PIL import Image, ImageDraw
 import PIL
 import requests
 from keras.models import model_from_json
+
 import datetime
 
 from electricity.celery import app
@@ -50,10 +51,13 @@ def refresh_frames(cycle):
                                        camera_parking_spot.bottom_left_x, camera_parking_spot.bottom_left_y))
 
                 # resize to the accepted input of the neural network NN_INPUT_SIZE
-                resized_image = rect_img.resize(NN_INPUT_SIZE, PIL.Image.ANTIALIAS)
+                image = rect_img.resize(NN_INPUT_SIZE, PIL.Image.ANTIALIAS)
+                image.shape = (1, 64, 64, 3)
+                image = image.astype('float32') / 255
 
                 # make prediction
-                camera_parking_spot.is_occupied = neural_network_predictor.predict(np.array(resized_image).reshape(1, 64, 64, 3))[0][0] == 1
+                prediction = neural_network_predictor.predict(image)[0][0] >= 0.5
+                camera_parking_spot.is_occupied = prediction
                 camera_parking_spot.save()
 
             except Exception as e:
