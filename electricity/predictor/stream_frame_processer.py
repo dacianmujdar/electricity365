@@ -52,12 +52,12 @@ def refresh_frames(cycle):
 
                 # resize to the accepted input of the neural network NN_INPUT_SIZE
                 image = rect_img.resize(NN_INPUT_SIZE, PIL.Image.ANTIALIAS)
-                image = np.array(image)
-                image.shape = (1, 64, 64, 3)
-                image = image.astype('float32') / 255
+                np_image = np.array(image)
+                np_image.shape = (1, 64, 64, 3)
+                np_image = np_image.astype('float32') / 255
 
                 # make prediction
-                prediction = neural_network_predictor.predict(image)[0][0] >= 0.5
+                prediction = neural_network_predictor.predict(np_image)[0][0] >= 0.5
                 camera_parking_spot.is_occupied = prediction
                 camera_parking_spot.save()
 
