@@ -57,7 +57,7 @@ def refresh_frames(cycle):
 
                 # make prediction
                 prediction = neural_network_predictor.predict(np_image)[0][0] >= 0.5
-                print("PREDICTION", neural_network_predictor.predict(np_image)[0][0])
+                print("PREDICTION on camera {}".format(camera.id), neural_network_predictor.predict(np_image)[0][0])
                 camera_parking_spot.is_occupied = prediction
                 camera_parking_spot.save()
 
