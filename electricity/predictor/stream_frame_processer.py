@@ -57,7 +57,8 @@ def refresh_frames(cycle):
 
                 # make prediction
                 prediction = neural_network_predictor.predict(np_image)[0][0] >= 0.5
-                print("PREDICTION on camera {}".format(camera.id), neural_network_predictor.predict(np_image))
+                print("PREDICTION on camera {}".format(camera.id), neural_network_predictor.predict(np_image)[0][0])
+                print(np_image.shape, np_image)
                 camera_parking_spot.is_occupied = prediction
                 camera_parking_spot.save()
 
@@ -65,7 +66,7 @@ def refresh_frames(cycle):
                 print("--------------------- exception occured {} ---------------------".format(e))
                 pass
         camera.last_updated = datetime.datetime.now()
-
+        camera.save()
     print("--------------------- Finish refresh frame cycle {} ---------------------".format(cycle))
     refresh_frames.apply_async((cycle + 1,), countdown=5)
 
