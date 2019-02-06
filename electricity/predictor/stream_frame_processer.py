@@ -51,8 +51,8 @@ def refresh_frames(cycle):
                                        camera_parking_spot.bottom_left_x, camera_parking_spot.bottom_left_y))
 
                 # resize to the accepted input of the neural network NN_INPUT_SIZE
-                image = rect_img.resize(NN_INPUT_SIZE, PIL.Image.ANTIALIAS)
-                np_image = np.array(image)
+                rect_img_resized = rect_img.resize(NN_INPUT_SIZE, PIL.Image.ANTIALIAS)
+                np_image = np.array(rect_img_resized)
                 np_image.shape = (1, 64, 64, 3)
                 np_image = np_image.astype('float32') / 255
 
