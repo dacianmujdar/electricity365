@@ -37,7 +37,6 @@ class Predictor:
         return cls._neural_network_predictor
 
 
-@app.task()
 def refresh_frames(cycle):
     print("--------------------- Start refresh frame cycle {} ---------------------".format(cycle))
     neural_network_predictor = Predictor.load_model()
@@ -67,5 +66,5 @@ def refresh_frames(cycle):
         camera.last_updated = datetime.datetime.now()
         camera.save()
     print("--------------------- Finish refresh frame cycle {} ---------------------".format(cycle))
-    refresh_frames.apply_async((cycle + 1,), countdown=5)
+    #refresh_frames.apply_async((cycle + 1,), countdown=5)
 

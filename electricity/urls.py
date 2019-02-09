@@ -28,8 +28,8 @@ urlpatterns = [
 
 ]
 
-start_task = False
+# start_task = False
 
-if not start_task:
-    start_task = True
-    refresh_frames.delay(0)
+# if not start_task:
+#     start_task = True
+#     refresh_frames.delay(0)
